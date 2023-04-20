@@ -171,24 +171,24 @@ def encode_ch(uniq_chars, probabilitys, sequence):
             tree.append([left[0], right[0]])
             final.append([left[0] + right[0], tot])
             final.sort(key=lambda x: x[1])
-    symbol_code = []
-    tree.reverse()
-    alphabet.sort()
-    for i in range(len(alphabet)):
-        code = ""
-        for j in range(len(tree)):
-            if alphabet[i] in tree[j][0]:
-                code = code + '0'
-                if alphabet[i] == tree[j][0]:
-                    break
-            else:
-                code = code + '1'
-                if alphabet[i] == tree[j][1]:
-                    break
-        symbol_code.append([alphabet[i], code])
-    encode = ""
-    for c in sequence:
-        encode += [symbol_code[i][1] for i in range(len(alphabet)) if symbol_code[i][0] == c][0]
+        symbol_code = []
+        tree.reverse()
+        alphabet.sort()
+        for i in range(len(alphabet)):
+            code = ""
+            for j in range(len(tree)):
+                if alphabet[i] in tree[j][0]:
+                    code = code + '0'
+                    if alphabet[i] == tree[j][0]:
+                        break
+                else:
+                    code = code + '1'
+                    if alphabet[i] == tree[j][1]:
+                        break
+            symbol_code.append([alphabet[i], code])
+        encode = ""
+        for c in sequence:
+            encode += [symbol_code[i][1] for i in range(len(alphabet)) if symbol_code[i][0] == c][0]
     return [encode, symbol_code], encode
 
 
