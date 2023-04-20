@@ -79,11 +79,9 @@ def main():
 
     fig, ax = plt.subplots(figsize=(14 / 1.54, 8 / 1.54))
     headers = ['Ентропія', 'КС RLE', 'КС LZW']
-    row = ['Послідовність 1', 'Послідовність 2', 'Послідовність 3', 'Послідовність 4', 'Послідовність 5',
-           'Послідовність 6', 'Послідовність 7', 'Послідовність 8']
+    row = ['Послідовність 1', 'Послідовність 2', 'Послідовність 3', 'Послідовність 4', 'Послідовність 5', 'Послідовність 6', 'Послідовність 7', 'Послідовність 8']
     ax.axis('off')
-    table = ax.table(cellText=results, colLabels=headers, rowLabels=row,
-                     loc='center', cellLoc='center')
+    table = ax.table(cellText=results, colLabels=headers, rowLabels=row, loc='center', cellLoc='center')
     table.set_fontsize(14)
     table.scale(0.8, 2)
     fig.savefig('Результати стиснення методами RLE та LZW' + '.png')
