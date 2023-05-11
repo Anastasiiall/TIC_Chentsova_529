@@ -8,7 +8,7 @@ CHECK_BITS = [i for i in range(1, CHUNK_LENGTH + 1) if not i & (i - 1)]
 
 def getCharsToBin(chars):
     assert not len(chars) * 8 % CHUNK_LENGTH, 'Довжина кодових даних повинна бути кратною довжині блоку кодування '
-    return ''.join([bin(ord(c))[2:].zfill(8) for c in chars])
+    return ''.join([bin(ord(c))[2:].zfill(16) for c in chars])
 
 
 def getChunkIterator(text_bin, chunk_size=CHUNK_LENGTH):
@@ -109,14 +109,16 @@ def decode(encoded, fix_errors=True):
     for encoded_chunk in getChunkIterator(encoded, CHUNK_LENGTH + len(CHECK_BITS)):
         if fix_errors:
             encoded_chunk = getCheckAndFixError(encoded_chunk)
-            fixed_encoded_list.append(encoded_chunk)
+        fixed_encoded_list.append(encoded_chunk)
     clean_chunk_list = []
     for encoded_chunk in fixed_encoded_list:
         encoded_chunk = getExcludeCheckBits(encoded_chunk)
         clean_chunk_list.append(encoded_chunk)
-        for clean_chunk in clean_chunk_list:
-            for clean_char in [clean_chunk[i:i + 8] for i in range(len(clean_chunk)) if not i % 8]:
-                decoded_value += chr(int(clean_char, 2))
+    clean_chunk_list = ''.join(clean_chunk_list)
+    for i in range(0, len(clean_chunk_list), 16):
+        clean_chunk = clean_chunk_list[i:i + 16]
+        for clean_char in [clean_chunk[i:i + 16] for i in range(len(clean_chunk)) if not i % 16]:
+            decoded_value += chr(int(clean_char, 2))
     return decoded_value
 
 
@@ -134,9 +136,9 @@ if __name__ == "__main__":
         diff_index_list = getDiffIndexList(encoded, encoded_with_error)
         decoded_with_error = decode(encoded_with_error, fix_errors=False)
         decoded_without_error = decode(encoded_with_error)
-        r = open("results_hamming.txt", "w", encoding="utf-8")
-        r.write(f'Оригінальну послідовність: {source}\n')
-        r.write(f'Оригінальну послідовність в бітах: {source_bin}\n')
+        r = open("results_hamming.txt", "a", encoding="utf-8")
+        r.write(f'Оригінальна послідовність: {source}\n')
+        r.write(f'Оригінальна послідовність в бітах: {source_bin}\n')
         r.write(f'Розмір оригінальної послідовності: {len(source_bin)}\n')
         r.write(f'Довжина блоку кодування: {CHUNK_LENGTH}\n')
         r.write(f'Позиція контрольних біт: {CHECK_BITS}\n')
@@ -146,12 +148,12 @@ if __name__ == "__main__":
         r.write(f'Розмір закодованих даних: {len(encoded)}\n')
         r.write('________Декодування__________'+'\n')
         r.write(f'Декодовані дані: {decoded}\n')
-        r.write(f'Розмір декодованих даних: {len(decoded)}\n')
+        r.write(f'Розмір декодованих даних: {len(decoded) * 16}\n')
         r.write('__________Внесення помилки__________'+'\n')
         r.write(f'Закодовані дані з помилками: {encoded_with_error}\n')
         r.write(f'Кількість помилок: {len(diff_index_list)}\n')
         r.write(f'Індекси помилок: {diff_index_list}\n')
         r.write(f'Декодовані дані без виправлення помилки: {decoded_with_error}\n')
         r.write('___________Виправлення помилки____________'+'\n')
-        r.write(f'Декодовані дані з виправлення помилки: {decoded_without_error}\n')
+        r.write(f'Декодовані дані з виправлення помилки: {decoded_without_error}\n\n\n')
         r.close()
