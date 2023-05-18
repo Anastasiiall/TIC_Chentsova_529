@@ -1,0 +1,19 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="Practice3.pr3.AbstractStructure" />
+          <option value="tuple.append" />
+          <option value="mypy.typeshed.stdlib.turtle.pendown.series" />
+          <option value="turtle.pendown.series" />
+          <option value="random.random.random" />
+          <option value="random.random.randint" />
+          <option value="random.random.randrange" />
+          <option value="float.__getitem__" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
